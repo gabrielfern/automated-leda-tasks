@@ -44,17 +44,26 @@ def main():
 
 def connectserver():
     req = requests.get(URLS[0])
-    hora = requests.get(URLS[1])
+    horareq = requests.get(URLS[1])
     allroteiros = CRONOGRAMA_PATTERN.findall(req.text)
     dates = []
-    for i in range(len(allroteiros)):
-        dates.append(allroteiros[i][-5:len(allroteiros[i])])
+    horas = []
     roteirnums = []
     for i in range(len(allroteiros)):
+        dates.append(allroteiros[i][-5:len(allroteiros[i])])
+    for i in range(len(allroteiros)):
         roteirnums.append(allroteiros[i][:6])
+    for i in range(len(allroteiros)):
+        horas.append(allroteiros[i][-12:-7])
     
-    print(dates)
-    print(roteirnums)
+    hora = horareq.text[-8:-3]
+    date = horareq.text[-19:-14]
+    
+    print(roteirnums, '\n')
+    print(dates, '\n')
+    print(horas, '\n')
+    print(date)
+    print(hora)
 
 
 if __name__ == '__main__':
