@@ -5,7 +5,7 @@ import re
 
 TURMA = '03'
 MATRICULA = '116110409'
-PATH = '/home/fernandes/leda-roteiros/'
+PATH = '/home/gabrielfs/leda-roteiros/'
 
 USAGE = '''Specify the sub-folder to looking for pom.xml
             like this: python3 autoit.py R05 5'''
