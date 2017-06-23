@@ -1,8 +1,10 @@
 #!/usr/bin/python3
+#Gabriel Fernandes <gabrielfernndss@gmail.com>
 
 import re
 import sys
 import requests
+
 
 TURMA = '03'
 MATRICULA = '116110409'
@@ -13,10 +15,9 @@ USAGE = '''Specify the sub-folder to looking for pom.xml
 
 MATRICULA_PATTERN = re.compile('INSIRA SEU NUMERO DE MATRICULA')
 ROTEIRO_PATTERN = re.compile('R0X-0X')
-CRONOGRAMA_PATTERN = re.compile("""R[01]\d-03\s*<td\s*class="text-xs-center"\s*data-toggle="tooltip"\s*data-placement="right"\s*title='Atividade\s*inicia\s*em\s*\d\d/\d\d/2017\s*\d\d:\d\d'>\d\d/\d\d""")
 
-URLS = ('http://150.165.85.29:81/cronograma',
-        'http://150.165.85.29:81/horaAtual')
+def run(path, turma, matricula):
+    pass
 
 
 def main():
@@ -42,29 +43,5 @@ def main():
     print('...done!')
 
 
-def connectserver():
-    req = requests.get(URLS[0])
-    horareq = requests.get(URLS[1])
-    allroteiros = CRONOGRAMA_PATTERN.findall(req.text)
-    dates = []
-    horas = []
-    roteirnums = []
-    for i in range(len(allroteiros)):
-        dates.append(allroteiros[i][-5:len(allroteiros[i])])
-    for i in range(len(allroteiros)):
-        roteirnums.append(allroteiros[i][:6])
-    for i in range(len(allroteiros)):
-        horas.append(allroteiros[i][-12:-7])
-    
-    hora = horareq.text[-8:-3]
-    date = horareq.text[-19:-14]
-    
-    print(roteirnums, '\n')
-    print(dates, '\n')
-    print(horas, '\n')
-    print(date)
-    print(hora)
-
-
 if __name__ == '__main__':
-    connectserver()
+    main()
