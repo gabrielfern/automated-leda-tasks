@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-#Gabriel Fernandes <gabrielfernndss@gmail.com>
+# Gabriel Fernandes <gabrielfernndss@gmail.com>
 
 import re
 import sys
@@ -10,14 +10,11 @@ TURMA = '03'
 MATRICULA = '116110409'
 PATH = '/home/fernandes/leda-roteiros/'
 
-USAGE = '''Specify the sub-folder to looking for pom.xml
-            like this: python3 autoit.py R05 5'''
+USAGE = '''Specify the folder to looking for pom.xml and the 'roteiro number' 
+            like this: python3 autoit.py /path/to/pom/ 5'''
 
 MATRICULA_PATTERN = re.compile('INSIRA SEU NUMERO DE MATRICULA')
-ROTEIRO_PATTERN = re.compile('R0X-0X')
-
-def run(path, turma, matricula):
-    pass
+ROTEIRO_PATTERN = re.compile('R0.-0.')
 
 
 def main():

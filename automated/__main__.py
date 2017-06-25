@@ -1,6 +1,6 @@
 #!/usr/bin/python3
-#Gabriel Fernandes <gabrielfernndss@gmail.com>
-#os.system('python3 -m pip install --user requests')
+# Gabriel Fernandes <gabrielfernndss@gmail.com>
+# os.system('python3 -m pip install --user requests')
 import os
 import re
 import sys

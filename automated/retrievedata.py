@@ -1,23 +1,29 @@
 #!/usr/bin/python3
-#Gabriel Fernandes <gabrielfernndss@gmail.com>
+# Gabriel Fernandes <gabrielfernndss@gmail.com>
 
 import re
+import sys
 import json
 import pprint
 import datetime
 import requests
 
 
-'''
+"""
 Access the server and retrieves
 some useful data
-'''
+"""
 
-
-CRONOGRAMA_PATTERN = re.compile("""R[01]\d-03\s*<td\s*class="text-xs-center"\s*data-toggle="tooltip"\s*data-placement="right"\s*title='Atividade\s*inicia\s*em\s*\d\d/\d\d/2017\s*\d\d:\d\d""")
 
 URLS = ('http://150.165.85.29:81/cronograma',
         'http://150.165.85.29:81/horaAtual')
+turma = '3'
+
+
+def make_pattern(turma):
+    return re.compile('''(?:P[PRF][1-3]|R[01]\d)-0''' + turma
+                    + '''\s*<td\s*class="text-xs-center"\s*data-toggle="tooltip"\s*data-placement="right"\s*title='Atividade'''
+                    + '''\s*inicia\s*em\s*\d\d/\d\d/2017\s*\d\d:\d\d''')
 
 
 def valida_requisicao(req):
@@ -51,7 +57,7 @@ def req_crono():
     req = requests.get(URLS[0])
     valida_requisicao(req)
 
-    all_roteiros = CRONOGRAMA_PATTERN.findall(req.text)
+    all_roteiros = make_pattern(turma).findall(req.text)
     roteiros = []
     dates = []
     horas = []
@@ -89,7 +95,22 @@ def get_hora_atual():
     return req_date_hora()[-8:-3]
 
 
+def set_up_turma(_turma):
+    global turma
+    if isinstance(_turma, str):
+        turmas = ('1', '2', '3')
+        if _turma in turmas:
+            turma = _turma
+        else:
+            raise ValueError('turma precisa ser uma das: (1,2,3)')
+    else:
+        raise TypeError('turma precisa ser um caractere("str")')
+
+
 def main():
+    global turma
+    if len(sys.argv) > 1:
+        turma = sys.argv[1]
     pprint.pprint(req_crono())
 
 
