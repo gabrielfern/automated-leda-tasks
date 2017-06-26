@@ -6,10 +6,8 @@ import os
 import sys
 import requests
 
+import retrievedata
 
-turma = '3'
-matricula = '116110409'
-path = '/home/fernandes/leda-roteiros/'
 
 USAGE = '''Specify the folder to looking for pom.xml and the 'roteiro number' 
             like this: python3 autoit.py /path/to/pom/ 5'''
@@ -41,44 +39,25 @@ def valida_path(path):
         raise TypeError('path precisa ser passado como uma "str')
 
 
-def set_up_turma(_turma):
-    global turma
-    valida_turma(_turma)
-    turma = _turma
-
-
-def set_up_matricula(_matricula):
-    global matricula
+def write_pom(path, matricula, roteiro):
+    valida_path(path)
     valida_matricula(_matricula)
-    matricula = _matricula
-
-
-def set_up_path(_path):
-    global path
-    valida_path(_path)
-    path = os.path.abspath(_path)
-
-
-def main():
-    if len(sys.argv) < 3:
-        print(USAGE)
-        sys.exit(1)
-    else:
-        new_path = path + sys.argv[1]
-        roteiro = 'R0' + sys.argv[2] + '-0' + turma
+    retrievedata.valida_roteiro(roteiro)
 
     data = None
-    with open(new_path + '/pom.xml', 'r') as pom:
-
+    with open(path + '/pom.xml', 'r') as pom:
         data = pom.read()
-        data = MATRICULA_PATTERN.sub(matricula, data)
+        data = MATRICULA_PATTERN.sub(_matricula, data)
         data = ROTEIRO_PATTERN.sub(roteiro, data)
 
     if data != None:
-        with open(new_path + '/pom.xml', 'w') as pom:
+        with open(path + '/pom.xml', 'w') as pom:
             pom.write(data)
 
-    print('...done!')
+
+def main():
+    args = sys.argv
+    write_pom(args[1], args[2], args[3])
 
 
 if __name__ == '__main__':

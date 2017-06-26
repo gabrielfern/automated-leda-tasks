@@ -4,7 +4,6 @@
 
 import re
 import sys
-import json
 import pprint
 import zipfile
 import datetime
@@ -23,7 +22,6 @@ some useful data
 URLS = ('http://150.165.85.29:81/cronograma',
         'http://150.165.85.29:81/horaAtual',
         'http://150.165.85.29:81/download')
-turma = '3'
 
 
 def make_pattern(turma):
@@ -38,6 +36,7 @@ def valida_requisicao(req):
     except requests.exceptions.HTTPError as http_error:
         print(http_error)
         sys.exit(1)
+
 
 def valida_roteiro(roteiro):
     if not isinstance(roteiro, str):
@@ -56,19 +55,19 @@ def make_datetime(datetime_tuple):
     return datetime.datetime(ano, mes, dia, hora, minutos)
 
 
-def get_roteiro_today():
+def get_roteiro_today(turma):
     today = get_datetime_atual()
-    all_roteiros = get_roteiros()
+    all_roteiros = get_roteiros(turma)
     for k in all_roteiros:
         if today.date() == all_roteiros[k].date():
             return k
-    print('Sem roteiros por hoje...')
-    sys.exit(0)
+    return None
 
 
-def req_crono():
+def req_crono(turma):
     req = requests.get(URLS[0])
     valida_requisicao(req)
+    autoit.valida_turma(turma)
 
     all_roteiros = make_pattern(turma).findall(req.text)
     roteiros = []
@@ -83,8 +82,8 @@ def req_crono():
     return all_roteiros
 
 
-def get_roteiros():
-    all_roteiros = req_crono()
+def get_roteiros(turma):
+    all_roteiros = req_crono(turma)
     for k in all_roteiros:
         all_roteiros[k] = make_datetime(all_roteiros[k])
     return all_roteiros
@@ -108,19 +107,10 @@ def get_hora_atual():
     return req_date_hora()[-8:-3]
 
 
-def set_up_turma(_turma):
-    global turma
-    autoit.valida_turma(_turma)
-    turma = _turma
-
-
-def get_roteiro_zip(roteiro, *matricula):
+def get_roteiro_zip(roteiro, matricula):
     valida_roteiro(roteiro)
-    if len(matricula) >= 1:
-        matricula = matricula[0]
-    else:
-        matricula = autoit.matricula
     autoit.valida_matricula(matricula)
+
     data = {'id': roteiro,
             'matricula': matricula}
     req_roteiro = requests.post('http://150.165.85.29:81/download', data=data)
@@ -130,10 +120,12 @@ def get_roteiro_zip(roteiro, *matricula):
 
 
 def main():
-    global turma
     if len(sys.argv) > 1:
-        turma = sys.argv[1]
-    pprint.pprint(req_crono())
+        pprint.pprint(req_crono(sys.argv[1]))
+    else:
+        print('''Você precisa especificar a turma passando como argumento da linha de comando
+            como por exemplo: "python3 retrievedata.py 3"" sendo o argumento referente a uma das 3 turmas''')
+        sys.exit(1)
 
 
 if __name__ == '__main__':
