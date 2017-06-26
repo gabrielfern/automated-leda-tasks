@@ -1,12 +1,17 @@
 #!/usr/bin/python3
 # Gabriel Fernandes <gabrielfernndss@gmail.com>
 
+
 import re
 import sys
 import json
 import pprint
+import zipfile
 import datetime
+
 import requests
+
+import autoit
 
 
 """
@@ -16,7 +21,8 @@ some useful data
 
 
 URLS = ('http://150.165.85.29:81/cronograma',
-        'http://150.165.85.29:81/horaAtual')
+        'http://150.165.85.29:81/horaAtual',
+        'http://150.165.85.29:81/download')
 turma = '3'
 
 
@@ -32,6 +38,13 @@ def valida_requisicao(req):
     except requests.exceptions.HTTPError as http_error:
         print(http_error)
         sys.exit(1)
+
+def valida_roteiro(roteiro):
+    if not isinstance(roteiro, str):
+        raise TypeError('roteiro precisa ser uma "str"')
+    regex = re.compile('(?:P[PRF][1-3]|R[01]\d)-0[1-3]')
+    if not regex.fullmatch(roteiro):
+        raise ValueError('roteiro precisa ter o seguinte formato: R03-02 ou PP2-3 por exemplo')
 
 
 def make_datetime(datetime_tuple):
@@ -97,14 +110,23 @@ def get_hora_atual():
 
 def set_up_turma(_turma):
     global turma
-    if isinstance(_turma, str):
-        turmas = ('1', '2', '3')
-        if _turma in turmas:
-            turma = _turma
-        else:
-            raise ValueError('turma precisa ser uma das: (1,2,3)')
+    autoit.valida_turma(_turma)
+    turma = _turma
+
+
+def get_roteiro_zip(roteiro, *matricula):
+    valida_roteiro(roteiro)
+    if len(matricula) >= 1:
+        matricula = matricula[0]
     else:
-        raise TypeError('turma precisa ser um caractere("str")')
+        matricula = autoit.matricula
+    autoit.valida_matricula(matricula)
+    data = {'id': roteiro,
+            'matricula': matricula}
+    req_roteiro = requests.post('http://150.165.85.29:81/download', data=data)
+    valida_requisicao(req_roteiro)
+    with open(roteiro, 'wb') as zp:
+        zp.write(req_roteiro.content)
 
 
 def main():
