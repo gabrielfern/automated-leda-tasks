@@ -7,6 +7,9 @@ import sys
 import json
 from . import autoit
 
+"""
+Em desenvolvimento...
+"""
 
 def set_up():
     data = {}

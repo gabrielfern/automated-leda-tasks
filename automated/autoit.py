@@ -36,18 +36,18 @@ def valida_path(path):
     if not isinstance(path, str):
         raise TypeError('insira um caminho("path") de diretorio valido')
     if not os.path.isdir(path):
-        raise TypeError('path precisa ser passado como uma "str')
+        raise TypeError('path precisa ser passado como uma "str"')
 
 
 def write_pom(path, matricula, roteiro):
     valida_path(path)
-    valida_matricula(_matricula)
+    valida_matricula(matricula)
     retrievedata.valida_roteiro(roteiro)
 
     data = None
     with open(path + '/pom.xml', 'r') as pom:
         data = pom.read()
-        data = MATRICULA_PATTERN.sub(_matricula, data)
+        data = MATRICULA_PATTERN.sub(matricula, data)
         data = ROTEIRO_PATTERN.sub(roteiro, data)
 
     if data != None:
@@ -57,7 +57,13 @@ def write_pom(path, matricula, roteiro):
 
 def main():
     args = sys.argv
-    write_pom(args[1], args[2], args[3])
+    try:
+        write_pom(args[1], args[2], args[3])
+    except IndexError:
+        print('''Uso: passar caminho ate a pasta em que se encontra o pom.xml, 
+            matricula e roteiro na qual deseja-se preencher automaticamento no pom
+            Exemplo: python3 autoit.py /home/fernandes/leda-roteiros 111110234 R03-03''')
+        sys.exit(1)
 
 
 if __name__ == '__main__':
