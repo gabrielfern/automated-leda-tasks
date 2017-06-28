@@ -5,12 +5,11 @@
 import re
 import sys
 import pprint
-import zipfile
 import datetime
 
 import requests
 
-import autoit
+from automated import autoit
 
 
 """

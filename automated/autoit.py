@@ -4,9 +4,10 @@
 import re
 import os
 import sys
+import zipfile
 import requests
 
-import retrievedata
+from automated import retrievedata
 
 
 USAGE = '''Specify the folder to looking for pom.xml and the 'roteiro number' 
@@ -34,9 +35,9 @@ def valida_matricula(matricula):
 
 def valida_path(path):
     if not isinstance(path, str):
-        raise TypeError('insira um caminho("path") de diretorio valido')
-    if not os.path.isdir(path):
         raise TypeError('path precisa ser passado como uma "str"')
+    if not os.path.isdir(path):
+        raise TypeError('insira um caminho("path") de diretorio valido')
 
 
 def write_pom(path, matricula, roteiro):
@@ -53,6 +54,11 @@ def write_pom(path, matricula, roteiro):
     if data != None:
         with open(path + '/pom.xml', 'w') as pom:
             pom.write(data)
+
+
+def extract_zip(zip, folder):
+    with zipfile.ZipFile(zip) as zp:
+        zp.extractall(folder)
 
 
 def main():
