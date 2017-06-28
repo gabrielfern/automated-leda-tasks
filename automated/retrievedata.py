@@ -9,7 +9,7 @@ import datetime
 
 import requests
 
-from automated import autoit
+from . import autoit
 
 
 """

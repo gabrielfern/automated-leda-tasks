@@ -7,7 +7,7 @@ import sys
 import zipfile
 import requests
 
-from automated import retrievedata
+from . import retrievedata
 
 
 USAGE = '''Specify the folder to looking for pom.xml and the 'roteiro number' 

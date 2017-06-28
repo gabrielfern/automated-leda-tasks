@@ -24,7 +24,7 @@ def set_up():
             continue
         
         data['turma'] = input('Digite sua turma(1, 2 ou 3): ')
-        if data['turma'] not in (1,2,3):
+        if data['turma'] not in ('1', '2', '3'):
             print('Sua turma precisa ser 1, 2 ou 3')
             continue
         
