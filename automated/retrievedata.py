@@ -24,7 +24,7 @@ URLS = ('http://150.165.85.29:81/cronograma',
 
 
 def make_pattern(turma):
-    return re.compile('''(?:P[PRF][1-3]|R[01]\d)-0''' + turma
+    return re.compile('''(?:P[PRF][1-3]|R(?:0|1(?=[1-7]))\d)-0''' + turma
                     + '''\s*<td\s*class="text-xs-center"\s*data-toggle="tooltip"\s*data-placement="right"\s*title='Atividade'''
                     + '''\s*inicia\s*em\s*\d\d/\d\d/2017\s*\d\d:\d\d''')
 
@@ -40,7 +40,7 @@ def valida_requisicao(req):
 def valida_roteiro(roteiro):
     if not isinstance(roteiro, str):
         raise TypeError('roteiro precisa ser uma "str"')
-    regex = re.compile('(?:P[PRF][1-3]|R[01]\d)-0[1-3]')
+    regex = re.compile('(?:P[PRF][1-3]|R(?:0|1(?=[1-7]))\d)-0[1-3]')
     if not regex.fullmatch(roteiro):
         raise ValueError('roteiro precisa ter o seguinte formato: R03-02 ou PP2-3 por exemplo')
 
@@ -106,16 +106,20 @@ def get_hora_atual():
     return req_date_hora()[-8:-3]
 
 
-def get_roteiro_zip(roteiro, matricula):
+def get_roteiro_zip(path, roteiro, matricula):
     valida_roteiro(roteiro)
+    autoit.valida_path(path)
     autoit.valida_matricula(matricula)
 
     data = {'id': roteiro,
             'matricula': matricula}
     req_roteiro = requests.post('http://150.165.85.29:81/download', data=data)
     valida_requisicao(req_roteiro)
-    with open(roteiro, 'wb') as zp:
-        zp.write(req_roteiro.content)
+    if req_roteiro.text.startswith('Matricula'):
+        raise ValueError('matricula nao cadastrada')
+    else:
+        with open(roteiro, 'wb') as zp:
+            zp.write(req_roteiro.content)
 
 
 def main():

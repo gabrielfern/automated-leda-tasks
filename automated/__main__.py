@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 # Gabriel Fernandes <gabrielfernndss@gmail.com>
 # os.system('python3 -m pip install --user requests')
+# print(os.path.dirname(os.path.abspath(__file__)))
+
 import os
 import re
 import sys
@@ -43,7 +45,7 @@ def set_up():
     
     if validado:
         with open('personalinfo.json', 'w') as arq:
-            json.dump(data, arq)
+            json.dump(data, arq, indent=2)
 
 
 def main():
