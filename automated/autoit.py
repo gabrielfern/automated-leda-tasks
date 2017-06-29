@@ -4,8 +4,8 @@
 import re
 import os
 import sys
+import shutil
 import zipfile
-import requests
 
 from . import retrievedata
 
@@ -59,6 +59,13 @@ def write_pom(path, matricula, roteiro):
 def extract_zip(zip, folder):
     with zipfile.ZipFile(zip) as zp:
         zp.extractall(folder)
+
+
+def move_folder(folder, path):
+    valida_path(folder)
+    valida_path(path)
+    
+    shutil.move(folder, path)
 
 
 def main():
