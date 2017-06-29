@@ -10,9 +10,6 @@ import zipfile
 from . import retrievedata
 
 
-USAGE = '''Specify the folder to looking for pom.xml and the 'roteiro number' 
-            like this: python3 autoit.py /path/to/pom/ 5'''
-
 MATRICULA_PATTERN = re.compile('INSIRA SEU NUMERO DE MATRICULA')
 ROTEIRO_PATTERN = re.compile('R0.-0.')
 
@@ -30,7 +27,7 @@ def valida_matricula(matricula):
         raise TypeError('matricula precisa ser uma "str"')
     regex = re.compile('\d{1,9}')
     if not regex.fullmatch(matricula):
-        raise ValueError('matricula precisa ser do tipo xxxxxxxxx, onde x é um digito(1-9)')
+        raise ValueError('matricula precisa ser do tipo xxxxxxxxx, onde x eh um digito(1-9)')
 
 
 def valida_path(path):

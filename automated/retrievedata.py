@@ -126,7 +126,7 @@ def main():
     if len(sys.argv) > 1:
         pprint.pprint(req_crono(sys.argv[1]))
     else:
-        print('''Você precisa especificar a turma passando como argumento da linha de comando
+        print('''Voce precisa especificar a turma passando como argumento da linha de comando
             como por exemplo: "python3 retrievedata.py 3"" sendo o argumento referente a uma das 3 turmas''')
         sys.exit(1)
 
