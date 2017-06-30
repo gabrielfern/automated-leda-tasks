@@ -55,7 +55,7 @@ def write_pom(path, matricula, roteiro):
 
 def extract_zip(zip, folder):
     valida_path(os.path.dirname(os.path.abspath(zip)))
-    valida_path(folder)
+    valida_path(os.path.dirname(os.path.abspath(folder)))
 
     with zipfile.ZipFile(zip) as zp:
         zp.extractall(folder)

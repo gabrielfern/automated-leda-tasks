@@ -75,11 +75,16 @@ def main():
             roteiro = retrievedata.match_roteiro(data['turma'])
 
             if roteiro:
-                retrievedata.get_roteiro_zip(HERE, roteiro, data['turma'])
-                autoit.extract_zip(os.path.join(HERE, roteiro), roteiro[0:3])
+                retrievedata.get_roteiro_zip(HERE, roteiro, data['matricula'])
+                autoit.extract_zip(os.path.join(HERE, roteiro), os.path.join(HERE, roteiro[0:3]))
                 autoit.write_pom(os.path.join(HERE, roteiro[0:3]), data['matricula'], roteiro)
-                autoit.move_folder(os.path.join(HERE, roteiro[0:3]), data['path'])
+                try:
+                    autoit.move_folder(os.path.join(HERE, roteiro[0:3]), data['path'])
+                except shutil.Error as e:
+                    print(e)
                 autoit.mvn_commit(os.path.join(data['path'], roteiro[0:3]))
+            else:
+                print('...sem roteiros disponiveis no momento')
 
     except KeyboardInterrupt:
         print('\nSaindo...')

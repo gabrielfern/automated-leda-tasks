@@ -3,6 +3,7 @@
 
 
 import re
+import os
 import sys
 import pprint
 import datetime
@@ -127,7 +128,7 @@ def get_roteiro_zip(path, roteiro, matricula):
     if req_roteiro.text.startswith('Matricula'):
         raise ValueError('matricula nao cadastrada')
     else:
-        with open(roteiro, 'wb') as zp:
+        with open(os.path.join(path, roteiro), 'wb') as zp:
             zp.write(req_roteiro.content)
 
 
