@@ -24,7 +24,7 @@ URLS = ('http://150.165.85.29:81/cronograma',
 
 
 def make_pattern(turma):
-    return re.compile('''(?:P[PRF][1-3]|R(?:0|1(?=[1-7]))\d)-0''' + turma
+    return re.compile('''(?:P[PRF][1-3]|R(?:0|1(?=[0-7]))\d)-0''' + turma
                     + '''\s*<td\s*class="text-xs-center"\s*data-toggle="tooltip"\s*data-placement="right"\s*title='Atividade'''
                     + '''\s*inicia\s*em\s*\d\d/\d\d/2017\s*\d\d:\d\d''')
 
@@ -40,7 +40,7 @@ def valida_requisicao(req):
 def valida_roteiro(roteiro):
     if not isinstance(roteiro, str):
         raise TypeError('roteiro precisa ser uma "str"')
-    regex = re.compile('(?:P[PRF][1-3]|R(?:0|1(?=[1-7]))\d)-0[1-3]')
+    regex = re.compile('(?:P[PRF][1-3]|R(?:0|1(?=[0-7]))\d)-0[1-3]')
     if not regex.fullmatch(roteiro):
         raise ValueError('roteiro precisa ter o seguinte formato: R03-02 ou PP2-3 por exemplo')
 
@@ -59,6 +59,15 @@ def get_roteiro_today(turma):
     all_roteiros = get_roteiros(turma)
     for k in all_roteiros:
         if today.date() == all_roteiros[k].date():
+            return k
+    return None
+
+
+def match_roteiro(turma):
+    today = get_datetime_atual()
+    all_roteiros = get_roteiros(turma)
+    for k in all_roteiros:
+        if today.date() == all_roteiros[k].date() and today.time() >= all_roteiros[k].time():
             return k
     return None
 

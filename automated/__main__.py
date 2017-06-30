@@ -12,7 +12,8 @@ from . import retrievedata
 
 
 """
-Em desenvolvimento...
+Aparentemente funcional,
+nao testado na pratica ainda...
 """
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -45,7 +46,7 @@ def set_up():
             print('Sua matricula precisa ter 9 digitos')
             continue
         break
-        
+
     while True:
         data['path'] = input('Caminho completo ate sua pasta com roteiros: ')
         if data['path'].strip() == '' or not os.path.isdir(data['path']):
@@ -70,7 +71,16 @@ def main():
         if 'personalinfo.json' not in os.listdir(HERE):
             set_up()
         else:
-            retrievedata.get_roteiro_today(get_personal_info()['turma'])
+            data = get_personal_info()
+            roteiro = retrievedata.match_roteiro(data['turma'])
+
+            if roteiro:
+                retrievedata.get_roteiro_zip(HERE, roteiro, data['turma'])
+                autoit.extract_zip(os.path.join(HERE, roteiro), roteiro[0:3])
+                autoit.write_pom(os.path.join(HERE, roteiro[0:3]), data['matricula'], roteiro)
+                autoit.move_folder(os.path.join(HERE, roteiro[0:3]), data['path'])
+                autoit.mvn_commit(os.path.join(data['path'], roteiro[0:3]))
+
     except KeyboardInterrupt:
         print('\nSaindo...')
         sys.exit(1)

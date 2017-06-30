@@ -54,6 +54,9 @@ def write_pom(path, matricula, roteiro):
 
 
 def extract_zip(zip, folder):
+    valida_path(os.path.dirname(os.path.abspath(zip)))
+    valida_path(folder)
+
     with zipfile.ZipFile(zip) as zp:
         zp.extractall(folder)
 
@@ -63,6 +66,12 @@ def move_folder(folder, path):
     valida_path(path)
     
     shutil.move(folder, path)
+
+
+def mvn_commit(path):
+    valida_path(path)
+
+    os.system('cd %s && mvn install -DskipTests' %path)
 
 
 def main():
