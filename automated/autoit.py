@@ -10,6 +10,12 @@ import zipfile
 from . import retrievedata
 
 
+"""
+Algumas funcoes de
+utilidade na automatizacao
+"""
+
+
 MATRICULA_PATTERN = re.compile('INSIRA SEU NUMERO DE MATRICULA')
 ROTEIRO_PATTERN = re.compile('R0.-0.')
 
@@ -72,6 +78,24 @@ def mvn_commit(path):
     valida_path(path)
 
     os.system('cd %s && mvn install -DskipTests' %path)
+
+
+def clear_zips(path):
+    valida_path(path)
+    
+    zips = filter(lambda f: f.endswith('.zip'), os.listdir(path))
+    zips = list(map(lambda f: os.path.abspath(f), zips))
+    return len(list(map(lambda f: os.unlink(f), zips)))
+
+
+def reset_config(path):
+    valida_path(path)
+    
+    try:
+        os.unlink(os.path.join(path, 'personalinfo.json'))
+        return 'configuracoes resetadas com sucesso'
+    except FileNotFoundError:
+        return 'configuracao ainda nao feita'
 
 
 def main():

@@ -14,8 +14,7 @@ from . import autoit
 
 
 """
-Access the server and retrieves
-some useful data
+Acesso ao servidor
 """
 
 
@@ -128,7 +127,7 @@ def get_roteiro_zip(path, roteiro, matricula):
     if req_roteiro.text.startswith('Matricula'):
         raise ValueError('matricula nao cadastrada')
     else:
-        with open(os.path.join(path, roteiro), 'wb') as zp:
+        with open(os.path.join(path, roteiro + '.zip'), 'wb') as zp:
             zp.write(req_roteiro.content)
 
 

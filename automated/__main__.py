@@ -1,20 +1,23 @@
 #!/usr/bin/python3
 # Gabriel Fernandes <gabrielfernndss@gmail.com>
-# os.system('python3 -m pip install --user requests')
-# print(os.path.dirname(os.path.abspath(__file__)))
+
 
 import os
 import re
 import sys
 import json
+import shutil
+from pprint import pprint
+
 from . import autoit
 from . import retrievedata
 
 
 """
-Aparentemente funcional,
-nao testado na pratica ainda...
+Controla as funcionalidades
+principais
 """
+
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 
@@ -62,8 +65,11 @@ def set_up():
 
 
 def get_personal_info():
-    with open(os.path.join(HERE, 'personalinfo.json')) as data:
-        return json.load(data)
+    try:
+        with open(os.path.join(HERE, 'personalinfo.json')) as data:
+            return json.load(data)
+    except FileNotFoundError:
+        return 'configuracao ainda nao realizada'
 
 
 def main():
@@ -71,20 +77,35 @@ def main():
         if 'personalinfo.json' not in os.listdir(HERE):
             set_up()
         else:
-            data = get_personal_info()
-            roteiro = retrievedata.match_roteiro(data['turma'])
-
-            if roteiro:
-                retrievedata.get_roteiro_zip(HERE, roteiro, data['matricula'])
-                autoit.extract_zip(os.path.join(HERE, roteiro), os.path.join(HERE, roteiro[0:3]))
-                autoit.write_pom(os.path.join(HERE, roteiro[0:3]), data['matricula'], roteiro)
-                try:
-                    autoit.move_folder(os.path.join(HERE, roteiro[0:3]), data['path'])
-                except shutil.Error as e:
-                    print(e)
-                autoit.mvn_commit(os.path.join(data['path'], roteiro[0:3]))
+            if len(sys.argv) > 1:
+                command = sys.argv[1]
+                options = {'info': get_personal_info,
+                           'reset': autoit.reset_config,
+                           'hora': retrievedata.get_hora_atual,
+                           'hoje': retrievedata.get_roteiro_today,
+                           'cronograma': retrievedata.req_crono}
+                if command == 'info' or command == 'hora':
+                    pprint(options[command]())
+                elif command == 'reset':
+                    pprint(options[command](HERE))
+                elif command == 'cronograma' or command == 'hoje':
+                    pprint(options[command](get_personal_info()['turma']))
+            
             else:
-                print('...sem roteiros disponiveis no momento')
+                data = get_personal_info()
+                roteiro = retrievedata.match_roteiro(data['turma'])
+
+                if roteiro:
+                    retrievedata.get_roteiro_zip(HERE, roteiro, data['matricula'])
+                    autoit.extract_zip(os.path.join(HERE, roteiro + '.zip'), os.path.join(HERE, roteiro[0:3]))
+                    autoit.write_pom(os.path.join(HERE, roteiro[0:3]), data['matricula'], roteiro)
+                    try:
+                        autoit.move_folder(os.path.join(HERE, roteiro[0:3]), data['path'])
+                    except shutil.Error as e:
+                        print(e)
+                    autoit.mvn_commit(os.path.join(data['path'], roteiro[0:3]))
+                else:
+                    print('...sem roteiros disponiveis no momento')
 
     except KeyboardInterrupt:
         print('\nSaindo...')
