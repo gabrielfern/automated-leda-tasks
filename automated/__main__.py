@@ -87,9 +87,30 @@ def main():
                 if command == 'info' or command == 'hora':
                     pprint(options[command]())
                 elif command == 'reset':
-                    pprint(options[command](HERE))
+                    print(options[command](HERE))
                 elif command == 'cronograma' or command == 'hoje':
                     pprint(options[command](get_personal_info()['turma']))
+                elif command == 'help':
+                    print('Como usar:',
+                                '\n\tEh recomendado instalar usando o pip3 do python3 (utilitario que ja vem com o python3)',
+                                '\n\tpois possibilita rodar com um so comando de qualquer diretorio sem se preocupar em mudar de pasta',
+                                    '\n\tPara instalar:',
+                                        '\n\t\tpip3 install --user automated-leda-tasks',
+                                        '\n\t\t(necessario ter o pacote na pasta atual)',
+                                    '\n\tPara rodar:',
+                                        '\n\t\tpython3 -m automated [opcional]',
+                                        '\n\t\t(so eh necessario rodar desta forma para ele fazer todo o trabalho)',
+                                '\n\tTambem eh possivel utilizar cada funcao independente importando do seu script/interpretador python3',
+                                    '\n\t\tfrom automated import [autoit | retrievedata]',
+                                '\n\tPossui diversos utilitarios interessantes, recomendo ver o codigo fonte de cada modulo',
+                            '\nOpcionais:',
+                                '\n\thelp::          mostra essa mensagem',
+                                '\n\tinfo::          exibe informacoes que foram cadastradas',
+                                '\n\thora::          exibe hora segundo o servidor',
+                                '\n\thoje::          mostra se existe roteiro para hoje',
+                                '\n\treset::         apaga configuracoes existentes',
+                                '\n\tcronograma::    exibe as datas para todos os roteiros do periodo'
+                        )
             
             else:
                 data = get_personal_info()
