@@ -9,8 +9,8 @@
   
   # Para usar:
   
-    git cloe https://github.com/gabrielfern/automated-leda-tasks
+    git clone https://github.com/gabrielfern/automated-leda-tasks
     pip3 install --user automated-leda-tasks
     
-    Entao rodar python3 -m automated
+    Entao rodar com python3 -m automated
     use python3 -m automated help, para saber como usar
