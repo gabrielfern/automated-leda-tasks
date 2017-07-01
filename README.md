@@ -2,4 +2,15 @@
 
 # automated-leda-tasks
 
-  Some repeatdly tasks automatized
+  Utilitario, para automaticamente verificar se existe um roteiro por commitar
+  na disciplina de leda, havendo ele baixa ele pra voce, descompacta, coloca em pasta
+  pre determinada, preenche o pom.xml com suas informacoes, e entao compila com o maven, enviando
+  ao servidor
+  
+  # Para usar:
+  
+    git cloe https://github.com/gabrielfern/automated-leda-tasks
+    pip3 install --user automated-leda-tasks
+    
+    Entao rodar python3 -m automated
+    use python3 -m automated help, para saber como usar
