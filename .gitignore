@@ -3,3 +3,4 @@ __pycache__
 *kate-swp
 dist
 automated.egg-info
+*pyc
