@@ -1,5 +1,6 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 # Gabriel Fernandes <gabrielfernndss@gmail.com>
+
 
 import re
 import os
@@ -7,7 +8,12 @@ import sys
 import shutil
 import zipfile
 
-from . import retrievedata
+py_version = sys.version_info.major
+
+if py_version == 2:
+    import retrievedata
+else:
+    from . import retrievedata
 
 
 """
@@ -31,8 +37,8 @@ def valida_turma(turma):
 def valida_matricula(matricula):
     if not isinstance(matricula, str):
         raise TypeError('matricula precisa ser uma "str"')
-    regex = re.compile('\d{1,9}')
-    if not regex.fullmatch(matricula):
+    regex = re.compile('\d{1,9}\Z')
+    if not regex.match(matricula):
         raise ValueError('matricula precisa ser do tipo xxxxxxxxx, onde x eh um digito(1-9)')
 
 

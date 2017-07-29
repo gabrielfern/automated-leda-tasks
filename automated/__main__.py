@@ -1,6 +1,8 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 # Gabriel Fernandes <gabrielfernndss@gmail.com>
 
+
+from __future__ import print_function
 
 import os
 import re
@@ -9,8 +11,17 @@ import json
 import shutil
 from pprint import pprint
 
-from . import autoit
-from . import retrievedata
+py_version = sys.version_info.major
+
+if py_version == 2:
+    import autoit
+    import retrievedata
+
+    input = raw_input
+
+else:
+    from . import autoit
+    from . import retrievedata
 
 
 """
@@ -66,8 +77,16 @@ def set_up():
 
 def get_personal_info():
     try:
-        with open(os.path.join(HERE, 'personalinfo.json')) as data:
-            return json.load(data)
+        FileNotFoundError
+    except NameError:
+        FileNotFoundError = IOError
+   
+    try:
+        with open(os.path.join(HERE, 'personalinfo.json')) as data:          
+            if py_version == 2:
+                return {a.encode('utf-8'):b.encode('utf-8') for a, b in json.load(data).items()}
+            return {a:b for a, b in json.load(data).items()}
+
     except FileNotFoundError:
         return 'configuracao ainda nao realizada'
 
@@ -85,7 +104,7 @@ def main():
                            'hoje': retrievedata.get_roteiro_today,
                            'cronograma': retrievedata.req_crono}
                 if command == 'info' or command == 'hora':
-                    pprint(options[command]())
+                    print(options[command]())
                 elif command == 'reset':
                     print(options[command](HERE))
                 elif command == 'cronograma' or command == 'hoje':
