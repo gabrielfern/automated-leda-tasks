@@ -4,3 +4,4 @@ __pycache__
 dist
 automated.egg-info
 *pyc
+*json
