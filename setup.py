@@ -5,16 +5,11 @@ from setuptools import setup
 from os import path
 
 
-here = path.abspath(path.dirname(__file__))
-with open(path.join(here, 'README.md')) as f:
-    long_description = f.read()
-
-
 setup(
    name='automated',
-   version='1.1.1',
+   version='1.1.3',
    description='A automated package',
-   long_description=long_description,
+   long_description=open('README.md').read(),
    license='MIT',
    classifiers=[
         'Programming Language :: Python :: 2',
@@ -24,5 +19,6 @@ setup(
    author='Gabriel Fernandes',
    author_email='gabrielfernndss@gmail.com',
    packages=['automated'],
-   install_requires=['requests'],
+   install_requires=['requests', 'setuptools'],
+   data_files=[('README.md', ['README.md']),]
 )
