@@ -27,7 +27,7 @@
     - requests (biblioteca externa de python, pip instala automaticamente)
     - sistema linux/mac (interacao com interface de comando baseada em bash)
 
-  # Para instalar:
+  # Para instalar
 
     pip install --user automated
 

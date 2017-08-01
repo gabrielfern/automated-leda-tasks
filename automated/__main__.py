@@ -45,14 +45,14 @@ def set_up():
             print('Voce precisa ter um nome')
             continue
         break
-        
+
     while True:
         data['turma'] = input('Digite sua turma(1, 2 ou 3): ')
         if data['turma'] not in ('1', '2', '3'):
             print('Sua turma precisa ser 1, 2 ou 3')
             continue
         break
-        
+
     while True:
         matricula_regex = re.compile(r'\d{9}')
         data['matricula'] = input('Numero de matricula: ')
@@ -80,9 +80,9 @@ def get_personal_info():
         FileNotFoundError
     except NameError:
         FileNotFoundError = IOError
-   
+
     try:
-        with open(os.path.join(HERE, 'personalinfo.json')) as data:          
+        with open(os.path.join(HERE, 'personalinfo.json')) as data:
             if py_version == 2:
                 return {a.encode('utf-8'):b.encode('utf-8') for a, b in json.load(data).items()}
             return {a:b for a, b in json.load(data).items()}
@@ -111,17 +111,17 @@ def main():
                     pprint(options[command](get_personal_info()['turma']))
                 elif command == 'help':
                     print('Como usar:',
-                                '\n\tEh recomendado instalar usando o pip3 do python3 (utilitario que ja vem com o python3)',
+                                '\n\tEh recomendado instalar usando o pip do python (utilitario que ja vem com o python)',
                                 '\n\tpois possibilita rodar com um so comando de qualquer diretorio sem se preocupar em mudar de pasta',
                                     '\n\tPara instalar:',
                                         '\n\t\tpip3 install --user automated-leda-tasks',
                                         '\n\t\t(necessario ter o pacote na pasta atual)',
                                     '\n\tPara rodar:',
-                                        '\n\t\tpython3 -m automated [opcional]',
+                                        '\n\t\tpython -m automated [opcional]',
                                         '\n\t\t(so eh necessario rodar desta forma para ele fazer todo o trabalho)',
-                                '\n\tTambem eh possivel utilizar cada funcao independente importando do seu script/interpretador python3',
+                                '\n\tTambem eh possivel utilizar cada funcao independente importando do seu script/interpretador python',
                                     '\n\t\tfrom automated import [autoit | retrievedata]',
-                                '\n\tPossui diversos utilitarios interessantes, recomendo ver o codigo fonte de cada modulo',
+                                '\n\tPossui diversos utilitarios interessantes, recomendado ver o codigo fonte de cada modulo',
                             '\nOpcionais:',
                                 '\n\thelp::          mostra essa mensagem',
                                 '\n\tinfo::          exibe informacoes que foram cadastradas',
@@ -130,7 +130,7 @@ def main():
                                 '\n\treset::         apaga configuracoes existentes',
                                 '\n\tcronograma::    exibe as datas para todos os roteiros do periodo'
                         )
-            
+
             else:
                 data = get_personal_info()
                 roteiro = retrievedata.match_roteiro(data['turma'])
