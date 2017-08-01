@@ -1,8 +1,9 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 # Gabriel Fernandes <gabrielfernndss@gmail.com>
 
 from setuptools import setup
 from os import path
+
 
 here = path.abspath(path.dirname(__file__))
 with open(path.join(here, 'README.md'), encoding='utf-8') as f:
@@ -11,11 +12,14 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 
 setup(
    name='automated',
-   version='1.0.0',
+   version='1.1.0',
    description='A automated module',
    long_description=long_description,
    license='MIT',
-   python_requires='>=3',
+   classifiers=[
+        'Programming Language :: Python :: 2',
+        'Programming Language :: Python :: 3',
+    ],
    url='https://github.com/gabrielfern/automated-leda-tasks',
    author='Gabriel Fernandes',
    author_email='gabrielfernndss@gmail.com',

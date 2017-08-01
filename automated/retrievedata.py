@@ -66,7 +66,6 @@ def get_roteiro_today(turma):
     for k in all_roteiros:
         if today.date() == all_roteiros[k].date():
             return k
-    return None
 
 
 def match_roteiro(turma):
@@ -75,7 +74,6 @@ def match_roteiro(turma):
     for k in all_roteiros:
         if today.date() == all_roteiros[k].date() and today.time() >= all_roteiros[k].time():
             return k
-    return None
 
 
 def req_crono(turma):
@@ -91,7 +89,7 @@ def req_crono(turma):
         roteiros.append(all_roteiros[i][:6])
         dates.append(all_roteiros[i][-16:-6])
         horas.append(all_roteiros[i][-1:-6:-1][::-1])
-    
+
     all_roteiros = {str(a):(str(b), str(c)) for a, b, c in ((roteiros[i], dates[i], horas[i]) for i in range(len(roteiros)))}
     return all_roteiros
 
@@ -106,7 +104,10 @@ def get_roteiros(turma):
 def req_date_hora():
     req = requests.get(URLS[1])
     valida_requisicao(req)
-    return req.text
+    if py_version == 2:
+        return req.text.encode('utf-8')
+    else:
+        return req.text
 
 
 def get_datetime_atual():

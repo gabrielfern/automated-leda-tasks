@@ -76,7 +76,7 @@ def extract_zip(zip, folder):
 def move_folder(folder, path):
     valida_path(folder)
     valida_path(path)
-    
+
     shutil.move(folder, path)
 
 
@@ -88,15 +88,15 @@ def mvn_commit(path):
 
 def clear_zips(path):
     valida_path(path)
-    
+
     zips = filter(lambda f: f.endswith('.zip'), os.listdir(path))
-    zips = list(map(lambda f: os.path.abspath(f), zips))
+    zips = list(map(lambda f: os.path.join(path, f), zips))
     return len(list(map(lambda f: os.unlink(f), zips)))
 
 
 def reset_config(path):
     valida_path(path)
-    
+
     try:
         os.unlink(os.path.join(path, 'personalinfo.json'))
         return 'configuracoes resetadas com sucesso'
@@ -109,7 +109,7 @@ def main():
     try:
         write_pom(args[1], args[2], args[3])
     except IndexError:
-        print('''Uso: passar caminho ate a pasta em que se encontra o pom.xml, 
+        print('''Uso: passar caminho ate a pasta em que se encontra o pom.xml,
             matricula e roteiro na qual deseja-se preencher automaticamento no pom
             Exemplo: python3 autoit.py /home/fernandes/leda-roteiros 111110234 R03-03''')
         sys.exit(1)
