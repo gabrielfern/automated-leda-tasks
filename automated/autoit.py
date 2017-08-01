@@ -1,5 +1,6 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 # Gabriel Fernandes <gabrielfernndss@gmail.com>
+
 
 import re
 import os
@@ -7,7 +8,12 @@ import sys
 import shutil
 import zipfile
 
-from . import retrievedata
+py_version = sys.version_info.major
+
+if py_version == 2:
+    import retrievedata
+else:
+    from . import retrievedata
 
 
 """
@@ -31,8 +37,8 @@ def valida_turma(turma):
 def valida_matricula(matricula):
     if not isinstance(matricula, str):
         raise TypeError('matricula precisa ser uma "str"')
-    regex = re.compile('\d{1,9}')
-    if not regex.fullmatch(matricula):
+    regex = re.compile('\d{1,9}\Z')
+    if not regex.match(matricula):
         raise ValueError('matricula precisa ser do tipo xxxxxxxxx, onde x eh um digito(1-9)')
 
 
@@ -70,7 +76,7 @@ def extract_zip(zip, folder):
 def move_folder(folder, path):
     valida_path(folder)
     valida_path(path)
-    
+
     shutil.move(folder, path)
 
 
@@ -82,15 +88,15 @@ def mvn_commit(path):
 
 def clear_zips(path):
     valida_path(path)
-    
+
     zips = filter(lambda f: f.endswith('.zip'), os.listdir(path))
-    zips = list(map(lambda f: os.path.abspath(f), zips))
+    zips = list(map(lambda f: os.path.join(path, f), zips))
     return len(list(map(lambda f: os.unlink(f), zips)))
 
 
 def reset_config(path):
     valida_path(path)
-    
+
     try:
         os.unlink(os.path.join(path, 'personalinfo.json'))
         return 'configuracoes resetadas com sucesso'
@@ -103,7 +109,7 @@ def main():
     try:
         write_pom(args[1], args[2], args[3])
     except IndexError:
-        print('''Uso: passar caminho ate a pasta em que se encontra o pom.xml, 
+        print('''Uso: passar caminho ate a pasta em que se encontra o pom.xml,
             matricula e roteiro na qual deseja-se preencher automaticamento no pom
             Exemplo: python3 autoit.py /home/fernandes/leda-roteiros 111110234 R03-03''')
         sys.exit(1)

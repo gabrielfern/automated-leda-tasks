@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 # Gabriel Fernandes <gabrielfernndss@gmail.com>
 
 
@@ -10,7 +10,13 @@ import datetime
 
 import requests
 
-from . import autoit
+py_version = sys.version_info.major
+
+if py_version == 2:
+    import autoit
+
+else:
+    from . import autoit
 
 
 """
@@ -40,8 +46,8 @@ def valida_requisicao(req):
 def valida_roteiro(roteiro):
     if not isinstance(roteiro, str):
         raise TypeError('roteiro precisa ser uma "str"')
-    regex = re.compile('(?:P[PRF][1-3]|R(?:0|1(?=[0-7]))\d)-0[1-3]')
-    if not regex.fullmatch(roteiro):
+    regex = re.compile('(?:P[PRF][1-3]|R(?:0|1(?=[0-7]))\d)-0[1-3]\Z')
+    if not regex.match(roteiro):
         raise ValueError('roteiro precisa ter o seguinte formato: R03-02 ou PP2-3 por exemplo')
 
 
@@ -60,7 +66,6 @@ def get_roteiro_today(turma):
     for k in all_roteiros:
         if today.date() == all_roteiros[k].date():
             return k
-    return None
 
 
 def match_roteiro(turma):
@@ -69,7 +74,6 @@ def match_roteiro(turma):
     for k in all_roteiros:
         if today.date() == all_roteiros[k].date() and today.time() >= all_roteiros[k].time():
             return k
-    return None
 
 
 def req_crono(turma):
@@ -85,8 +89,8 @@ def req_crono(turma):
         roteiros.append(all_roteiros[i][:6])
         dates.append(all_roteiros[i][-16:-6])
         horas.append(all_roteiros[i][-1:-6:-1][::-1])
-    
-    all_roteiros = {a:(b,c) for a, b, c in ((roteiros[i], dates[i], horas[i]) for i in range(len(roteiros)))}
+
+    all_roteiros = {str(a):(str(b), str(c)) for a, b, c in ((roteiros[i], dates[i], horas[i]) for i in range(len(roteiros)))}
     return all_roteiros
 
 
@@ -100,7 +104,10 @@ def get_roteiros(turma):
 def req_date_hora():
     req = requests.get(URLS[1])
     valida_requisicao(req)
-    return req.text
+    if py_version == 2:
+        return req.text.encode('utf-8')
+    else:
+        return req.text
 
 
 def get_datetime_atual():
@@ -136,7 +143,7 @@ def main():
         pprint.pprint(req_crono(sys.argv[1]))
     else:
         print('''Voce precisa especificar a turma passando como argumento da linha de comando
-            como por exemplo: "python3 retrievedata.py 3"" sendo o argumento referente a uma das 3 turmas''')
+            como por exemplo: "python3 retrievedata.py 3" sendo o argumento referente a uma das 3 turmas''')
         sys.exit(1)
 
 
