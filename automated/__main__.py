@@ -98,53 +98,63 @@ def main():
             main()
         else:
             if len(sys.argv) > 1:
+                options = ('help', 'info', 'reset', 'hora', 'hoje', 'cronograma')
                 command = sys.argv[1]
-                options = {'info': get_personal_info,
-                           'reset': autoit.reset_config,
-                           'hora': retrievedata.get_hora_atual,
-                           'hoje': retrievedata.get_roteiro_today,
-                           'cronograma': retrievedata.req_crono}
-                if command == 'info' or command == 'hora':
-                    print(options[command]())
-                elif command == 'reset':
-                    print(options[command](HERE))
-                elif command == 'cronograma' or command == 'hoje':
-                    pprint(options[command](get_personal_info()['turma']))
-                elif command == 'help':
-                    print('Como usar:',
-                                '\n\tEh recomendado instalar usando o pip do python (utilitario que ja vem com o python)',
-                                '\n\tpois possibilita rodar com um so comando de qualquer diretorio sem se preocupar em mudar de pasta',
-                                    '\n\tPara instalar:',
-                                        '\n\t\tpip install --user automated-leda-tasks',
-                                        '\n\t\t(necessario ter o pacote na pasta atual)',
-                                    '\n\tPara rodar:',
-                                        '\n\t\tpython -m automated [opcional]',
-                                        '\n\t\t(so eh necessario rodar desta forma para ele fazer todo o trabalho)',
-                                '\n\tTambem eh possivel utilizar cada funcao independente importando do seu script/interpretador python',
-                                    '\n\t\tfrom automated import [autoit | retrievedata]',
-                                '\n\tPossui diversos utilitarios interessantes, recomendado ver o codigo fonte de cada modulo',
-                            '\nOpcionais:',
-                                '\n\thelp::          mostra essa mensagem',
-                                '\n\tinfo::          exibe informacoes que foram cadastradas',
-                                '\n\thora::          exibe hora segundo o servidor',
-                                '\n\thoje::          mostra se existe roteiro para hoje',
-                                '\n\treset::         apaga configuracoes existentes',
-                                '\n\tcronograma::    exibe as datas para todos os roteiros do periodo'
-                        )
-
+                if command in options:
+                    options = {'info': get_personal_info,
+                               'reset': autoit.reset_config,
+                               'hora': retrievedata.get_hora_atual,
+                               'hoje': retrievedata.get_roteiro_today,
+                               'cronograma': retrievedata.req_crono}
+                    if command == 'info' or command == 'hora':
+                        print(options[command]())
+                    elif command == 'reset':
+                        print(options[command](HERE))
+                    elif command == 'cronograma' or command == 'hoje':
+                        pprint(options[command](get_personal_info()['turma']))
+                    elif command == 'help':
+                        print('Como usar:',
+                                    '\n\tEh recomendado instalar usando o pip do python (utilitario que ja vem com o python)',
+                                    '\n\tpois possibilita rodar com um so comando de qualquer diretorio sem se preocupar em mudar de pasta',
+                                        '\n\tPara instalar:',
+                                            '\n\t\tpip install --user automated-leda-tasks',
+                                            '\n\t\t(necessario ter o pacote na pasta atual)',
+                                        '\n\tPara rodar:',
+                                            '\n\t\tpython -m automated [opcional]',
+                                            '\n\t\t(so eh necessario rodar desta forma para ele fazer todo o trabalho)',
+                                    '\n\tTambem eh possivel utilizar cada funcao independente importando do seu script/interpretador python',
+                                        '\n\t\tfrom automated import [autoit | retrievedata]',
+                                    '\n\tPossui diversos utilitarios interessantes, recomendado ver o codigo fonte de cada modulo',
+                                '\nOpcionais:',
+                                    '\n\thelp::          mostra essa mensagem',
+                                    '\n\treset::         reseta configuracoes',
+                                    '\n\tinfo::          exibe informacoes configuradas',
+                                    '\n\thora::          exibe hora segundo o servidor',
+                                    '\n\thoje::          mostra se existe roteiro para hoje',
+                                    '\n\tcronograma::    exibe as datas para todos os roteiros do periodo'
+                            )
+                else:
+                    print('Opcional %s nao valido, ' %command,
+                          '\nConfira em "python -m automated help" os opcionais validos')
             else:
                 data = get_personal_info()
                 roteiro = retrievedata.match_roteiro(data['turma'])
 
                 if roteiro:
+                    print('Roteiro %s disponivel, pegando ele para voce...\n' %s)
                     retrievedata.get_roteiro_zip(HERE, roteiro, data['matricula'])
                     autoit.extract_zip(os.path.join(HERE, roteiro + '.zip'), os.path.join(HERE, roteiro[0:3]))
+                    autoit.rm_zips(HERE)
                     autoit.write_pom(os.path.join(HERE, roteiro[0:3]), data['matricula'], roteiro)
                     try:
                         autoit.move_folder(os.path.join(HERE, roteiro[0:3]), data['path'])
                     except shutil.Error as e:
-                        print(e)
+                        autoit.rm_folders(HERE)
+
+                    print('...enviando com o maven...\n')
                     autoit.mvn_commit(os.path.join(data['path'], roteiro[0:3]))
+                    print('...trabalho acabado por aqui, roteiro %s' %roteiro,
+                            '\nencontra-se em %s' %(data['path'] + roteiro[0:3]))
                 else:
                     print('...sem roteiros disponiveis no momento')
 

@@ -86,12 +86,20 @@ def mvn_commit(path):
     os.system('cd %s && mvn install -DskipTests' %path)
 
 
-def clear_zips(path):
+def rm_zips(path):
     valida_path(path)
 
     zips = filter(lambda f: f.endswith('.zip'), os.listdir(path))
     zips = list(map(lambda f: os.path.join(path, f), zips))
     return len(list(map(lambda f: os.unlink(f), zips)))
+
+
+def rm_folders(path):
+    valida_path(path)
+
+    folders = list(map(lambda f: os.path.join(path, f), os.listdir(path)))
+    folders = filter(lambda f: os.path.isdir(f) and not f.endswith('__pycache__'), folders)
+    return len(list(map(lambda f: shutil.rmtree(f), folders)))
 
 
 def reset_config(path):
