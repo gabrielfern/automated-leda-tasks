@@ -95,6 +95,7 @@ def main():
     try:
         if 'personalinfo.json' not in os.listdir(HERE):
             set_up()
+            main()
         else:
             if len(sys.argv) > 1:
                 command = sys.argv[1]
