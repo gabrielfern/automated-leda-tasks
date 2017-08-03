@@ -2,7 +2,6 @@
 # Gabriel Fernandes <gabrielfernndss@gmail.com>
 
 from setuptools import setup
-from os import path
 
 
 setup(
