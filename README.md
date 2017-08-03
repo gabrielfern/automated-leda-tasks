@@ -30,6 +30,10 @@
 
     pip install --user automated
 
+  # Atualizar
+
+    pip install --user -U automated
+
   # Rodar
 
     python -m automated
