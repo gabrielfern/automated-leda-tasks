@@ -26,14 +26,14 @@
     - sistema linux/mac (interacao com interface de comando baseada em bash)
     - pip (gerenciador de pacotes python, instala dependencias internas automaticamente)
 
-  # Para instalar
+  # Instalar
 
     pip install --user automated
 
-  # Para rodar
+  # Rodar
 
     python -m automated
 
-  # Para ajuda
+  # Ajuda
 
     python -m automated help
