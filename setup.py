@@ -7,7 +7,7 @@ from os import path
 
 setup(
    name='automated',
-   version='1.1.3',
+   version='1.1.4',
    description='A automated package',
    long_description=open('README.md').read(),
    license='MIT',

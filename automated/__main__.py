@@ -85,7 +85,7 @@ def get_personal_info():
         with open(os.path.join(HERE, 'personalinfo.json')) as data:
             if py_version == 2:
                 return {a.encode('utf-8'):b.encode('utf-8') for a, b in json.load(data).items()}
-            return {a:b for a, b in json.load(data).items()}
+            return json.load(data)
 
     except FileNotFoundError:
         return 'configuracao ainda nao realizada'
@@ -114,7 +114,7 @@ def main():
                                 '\n\tEh recomendado instalar usando o pip do python (utilitario que ja vem com o python)',
                                 '\n\tpois possibilita rodar com um so comando de qualquer diretorio sem se preocupar em mudar de pasta',
                                     '\n\tPara instalar:',
-                                        '\n\t\tpip3 install --user automated-leda-tasks',
+                                        '\n\t\tpip install --user automated-leda-tasks',
                                         '\n\t\t(necessario ter o pacote na pasta atual)',
                                     '\n\tPara rodar:',
                                         '\n\t\tpython -m automated [opcional]',
