@@ -72,7 +72,7 @@ def set_up():
     if validado:
         with open(os.path.join(HERE, 'personalinfo.json'), 'w') as arq:
             json.dump(data, arq, indent=2)
-        print('\nConfiguracao efetuada com sucesso!')
+        print('\nConfiguracao efetuada com sucesso!\n')
 
 
 def get_personal_info():
@@ -141,7 +141,7 @@ def main():
                 roteiro = retrievedata.match_roteiro(data['turma'])
 
                 if roteiro:
-                    print('Roteiro %s disponivel, pegando ele para voce...\n' %s)
+                    print('Roteiro %s disponivel, pegando ele para voce...' %roteiro)
                     retrievedata.get_roteiro_zip(HERE, roteiro, data['matricula'])
                     autoit.extract_zip(os.path.join(HERE, roteiro + '.zip'), os.path.join(HERE, roteiro[0:3]))
                     autoit.rm_zips(HERE)
@@ -153,8 +153,8 @@ def main():
 
                     print('...enviando com o maven...\n')
                     autoit.mvn_commit(os.path.join(data['path'], roteiro[0:3]))
-                    print('...trabalho acabado por aqui, roteiro %s' %roteiro,
-                            '\nencontra-se em %s' %(data['path'] + roteiro[0:3]))
+                    print('\n...trabalho acabado por aqui, roteiro %s' %roteiro,
+                            '\nencontra-se em %s' %(data['path'] + '/' + roteiro[0:3]))
                 else:
                     print('...sem roteiros disponiveis no momento')
 
