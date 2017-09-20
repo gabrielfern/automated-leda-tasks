@@ -129,7 +129,7 @@ def get_roteiro_zip(path, roteiro, matricula):
 
     data = {'id': roteiro,
             'matricula': matricula}
-    req_roteiro = requests.post('http://150.165.85.29:81/download', data=data)
+    req_roteiro = requests.post(URLS[2], data=data)
     valida_requisicao(req_roteiro)
     if req_roteiro.text.startswith('Matricula'):
         raise ValueError('matricula nao cadastrada')
