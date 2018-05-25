@@ -1,5 +1,7 @@
+# -*- coding: utf-8 -*-
 #!/usr/bin/python
 # Gabriel Fernandes <gabrielfernndss@gmail.com>
+# Héricles Emanuel <hericles.me@gmail.com>
 
 
 import re
@@ -131,8 +133,8 @@ def get_roteiro_zip(path, roteiro, matricula):
             'matricula': matricula}
     req_roteiro = requests.post(URLS[2], data=data)
     valida_requisicao(req_roteiro)
-    if req_roteiro.text.startswith('Matricula'):
-        raise ValueError('matricula nao cadastrada')
+    if req_roteiro.text.startswith('Matrícula'):
+        raise ValueError('Matrícula não cadastrada')
     else:
         with open(os.path.join(path, roteiro + '.zip'), 'wb') as zp:
             zp.write(req_roteiro.content)
@@ -142,8 +144,8 @@ def main():
     if len(sys.argv) > 1:
         pprint.pprint(req_crono(sys.argv[1]))
     else:
-        print('''Voce precisa especificar a turma passando como argumento da linha de comando
-            como por exemplo: "python3 retrievedata.py 3" sendo o argumento referente a uma das 3 turmas''')
+        print('''Você precisa especificar a turma passando como argumento da linha de comando.
+            Por exemplo: "python3 retrievedata.py 3" Sendo o argumento referente a uma das 3 turmas''')
         sys.exit(1)
 
 

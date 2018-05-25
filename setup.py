@@ -1,5 +1,6 @@
 #!/usr/bin/python
 # Gabriel Fernandes <gabrielfernndss@gmail.com>
+# Héricles Emanuel <hericles.me@gmail.com>
 
 from setuptools import setup
 
@@ -18,6 +19,6 @@ setup(
    author='Gabriel Fernandes',
    author_email='gabrielfernndss@gmail.com',
    packages=['automated'],
-   install_requires=['requests', 'setuptools'],
+   install_requires=['requests', 'setuptools', 'crontab'],
    data_files=[('README.md', ['README.md']),]
 )
