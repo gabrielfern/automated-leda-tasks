@@ -45,14 +45,14 @@ def set_up():
     while True:
         data['nome'] = input('Digite seu nome: ')
         if data['nome'].strip == '':
-            autoit.writeError('Você precisa ter um nome')
+            autoit.write_error('Você precisa ter um nome')
             continue
         break
 
     while True:
         data['turma'] = input('Digite sua turma(1, 2 ou 3): ')
         if data['turma'] not in ('1', '2', '3'):
-            autoit.writeError('Sua turma precisa ser 1, 2 ou 3')
+            autoit.write_error('Sua turma precisa ser 1, 2 ou 3')
             continue
         break
 
@@ -60,14 +60,14 @@ def set_up():
         matricula_regex = re.compile(r'\d{9}')
         data['matricula'] = input('Número de matrícula: ')
         if matricula_regex.match(data['matricula']) == None:
-            autoit.writeError('Sua matrícula precisa ter 9 dígitos')
+            autoit.write_error('Sua matrícula precisa ter 9 dígitos')
             continue
         break
 
     while True:
         data['path'] = input('Caminho completo até sua pasta com roteiros: ')
         if data['path'].strip() == '' or not os.path.isdir(data['path']):
-            autoit.writeError('Você precisa especificar um caminho para sua pasta')
+            autoit.write_error('Você precisa especificar um caminho para sua pasta')
             continue
         validado = True
         break
@@ -75,7 +75,7 @@ def set_up():
     if validado:
         with open(os.path.join(HERE, 'personalinfo.json'), 'w') as arq:
             json.dump(data, arq, indent=2)
-        autoit.writeSuccess('\nConfiguracao efetuada com sucesso!\n')
+        autoit.write_success('\nConfiguracao efetuada com sucesso!\n')
 
 
 def get_personal_info():
@@ -91,7 +91,7 @@ def get_personal_info():
             return json.load(data)
 
     except FileNotFoundError:
-        autoit.writeError('Configuracão ainda não realizada')
+        autoit.write_error('Configuracão ainda não realizada')
 
 def main():
     try:
@@ -107,15 +107,13 @@ def main():
                 elif command == 'hora':
                     print(retrievedata.get_hora_atual())
                 elif command == 'reset':
-                    print(autoit.reset_config(HERE))
+                    autoit.reset_config(HERE)
                 elif command == 'hoje':
                     print(retrievedata.get_roteiro_today(get_personal_info()['turma']))
                 elif command == 'cronograma':
                     pprint(retrievedata.req_crono(get_personal_info()['turma']))
                 elif command == 'config':
-                    (autoit.agendar_submissao())
-                elif command == 'limpar':
-                    (autoit.clear_data())
+                    autoit.agendar_submissao()
                 else:
                     print('Como usar',
                                 '\n\tSempre que tiver um roteiro para fazer, rode como um modulo python',
@@ -148,7 +146,7 @@ def main():
                 roteiro = retrievedata.match_roteiro(data['turma'])
 
                 if roteiro:
-                    autoit.writeSuccess('Roteiro %s disponível, pegando ele para você...' %roteiro)
+                    autoit.write_success('Roteiro %s disponível, pegando ele para você...' %roteiro)
                     retrievedata.get_roteiro_zip(HERE, roteiro, data['matricula'])
                     autoit.extract_zip(os.path.join(HERE, roteiro + '.zip'), os.path.join(HERE, roteiro[0:3]))
                     autoit.rm_zips(HERE)
@@ -158,12 +156,12 @@ def main():
                     except shutil.Error as e:
                         autoit.rm_folders(HERE)
 
-                    autoit.writeSuccess('...Enviando com o maven...\n')
+                    autoit.write_success('...Enviando com o maven...\n')
                     autoit.mvn_commit(os.path.join(data['path'], roteiro[0:3]))
-                    autoit.writeSuccess('\n...Trabalho acabado por aqui, Roteiro %s' %roteiro,
+                    autoit.write_success('\n...Trabalho acabado por aqui, Roteiro %s' %roteiro,
                             '\nencontra-se em %s' %(data['path'] + '/' + roteiro[0:3]))
                 else:
-                    autoit.writeError('... Sem roteiros disponíveis no momento')
+                    autoit.write_error('... Sem roteiros disponíveis no momento')
 
     except KeyboardInterrupt:
         print('\nSaindo...')

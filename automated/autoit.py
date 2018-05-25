@@ -27,14 +27,16 @@ utilidade na automatizacao
 
 MATRICULA_PATTERN = re.compile('INSIRA SEU NUMERO DE MATRICULA')
 ROTEIRO_PATTERN = re.compile('R0.-0.')
-DAY = "\n\r[1] - Segunda \n\r[2] - Terca \n\r[3] - Quarta \n\r[4] - Quinta \n\r[5] - Sexta\n\r"
+DAY = '\n\r[1] - Segunda \n\r[2] - Terca \n\r[3] - Quarta \n\r[4] - Quinta \n\r[5] - Sexta\n\r'
 CRON = CronTab(user=True)
 
-def writeError(mensagem):
+def write_error(mensagem):
     print('\033[31m' + mensagem + '\033[0;0m')
 
-def writeSuccess(mensagem):
+
+def write_success(mensagem):
     print('\33[32m' + mensagem + '\033[0;0m')
+
 
 def clear_data():
     this = ['python', '-m', 'automated']
@@ -42,7 +44,7 @@ def clear_data():
         if (str(job).split()[-3:] == this):
             CRON.remove(job)
     CRON.write()
-    writeSuccess('Configurações de agendamento resetadas com sucesso')
+    write_success('Configurações de agendamento resetadas com sucesso')
 
 def agendar_submissao():
     print(DAY)
@@ -53,9 +55,9 @@ def agendar_submissao():
             valida_data(data)
             break
         except (TypeError, NameError):
-            writeError('Data precisa ser um inteiro')
+            write_error('Data precisa ser um inteiro')
         except ValueError:
-            writeError('Data precisa ser um valor entre 1 e 5')
+            write_error('Data precisa ser um valor entre 1 e 5')
             
     while True:
         try:
@@ -63,9 +65,9 @@ def agendar_submissao():
             valida_hora(hora)
             break
         except (TypeError, NameError):
-            writeError('Hora precisa ser um inteiro')
+            write_error('Hora precisa ser um inteiro')
         except ValueError:
-            writeError('Hora precisa ser um valor entre 0 e 24')
+            write_error('Hora precisa ser um valor entre 0 e 24')
     dias = {'1':'MON', '2': 'TUE', '3': 'WED', '4': 'THU', '5': 'FRI'}
     job  = CRON.new(command='python -m automated')
     job.dow.on(dias[str(data)])
@@ -73,7 +75,7 @@ def agendar_submissao():
     job.minute.also.on(1)
     job.enable()
     CRON.write()
-    writeSuccess('Submissão agendada com Sucesso')
+    write_success('Submissão agendada com Sucesso')
 
 def valida_data(data):
     if not isinstance(data, int):
@@ -170,9 +172,9 @@ def reset_config(path):
     
     try:
         os.unlink(os.path.join(path, 'personalinfo.json'))
-        return 'Configurações resetadas com sucesso'
+        write_success('Configurações resetadas com sucesso')
     except FileNotFoundError:
-        return 'Configuraçao ainda não feita'
+        write_error('Configuraçao ainda não feita')
 
 
 def main():
