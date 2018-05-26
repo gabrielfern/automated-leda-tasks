@@ -28,13 +28,9 @@
 
   # Instalar
 
-    pip install --user automated
+    python setup.py install --user
 
-  # Atualizar
-
-    pip install --user -U automated
-
-  # Rodar
+  # Executar
 
     python -m automated
 
