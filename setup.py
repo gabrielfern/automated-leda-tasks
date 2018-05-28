@@ -1,15 +1,21 @@
-#!/usr/bin/python
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 # Gabriel Fernandes <gabrielfernndss@gmail.com>
 # Héricles Emanuel <hericles.me@gmail.com>
 
-from setuptools import setup
+
+try:
+    from setuptools import setup
+except ImportError:
+    from os import system
+    system('pip install --user setuptools')
+    from setuptools import setup
 
 
 setup(
    name='automated',
-   version='1.1.5',
-   description='A automated package',
-   long_description=open('README.md').read(),
+   version='1.2.0',
+   description='Automatizador de tarefas - LEDA',
    license='MIT',
    classifiers=[
         'Programming Language :: Python :: 2',
@@ -19,6 +25,5 @@ setup(
    author='Gabriel Fernandes',
    author_email='gabrielfernndss@gmail.com',
    packages=['automated'],
-   install_requires=['requests', 'setuptools', 'crontab'],
-   data_files=[('README.md', ['README.md']),]
+   install_requires=['requests', 'python-crontab'],
 )

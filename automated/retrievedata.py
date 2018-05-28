@@ -1,5 +1,5 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
-#!/usr/bin/python
 # Gabriel Fernandes <gabrielfernndss@gmail.com>
 # Héricles Emanuel <hericles.me@gmail.com>
 

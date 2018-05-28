@@ -1,5 +1,5 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
-#!/usr/bin/python
 # Gabriel Fernandes <gabrielfernndss@gmail.com>
 # Héricles Emanuel <hericles.me@gmail.com>
 
@@ -112,7 +112,7 @@ def main():
                     print(retrievedata.get_roteiro_today(get_personal_info()['turma']))
                 elif command == 'cronograma':
                     pprint(retrievedata.req_crono(get_personal_info()['turma']))
-                elif command == 'config':
+                elif command == 'agendar':
                     autoit.agendar_submissao()
                 else:
                     print('Como usar',
@@ -136,7 +136,7 @@ def main():
                                 '\n\thora::          exibe hora segundo o servidor',
                                 '\n\thoje::          mostra se existe roteiro para hoje',
                                 '\n\tinfo::          exibe informacoes configuradas',
-                                '\n\tagenda::         agenda a submissão dos roteiros',
+                                '\n\tagendar::       agenda a submissão dos roteiros',
                                 '\n\treset::         reseta configuracoes',
                                 '\n\tcronograma::    exibe todos os roteiros do periodo'
                         )
@@ -165,9 +165,8 @@ def main():
 
     except KeyboardInterrupt:
         print('\nSaindo...')
-        sys.exit(1)
+        sys.exit(0)
 
 
 if __name__ == '__main__':
     main()
-    

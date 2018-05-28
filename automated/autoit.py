@@ -1,5 +1,5 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
-#!/usr/bin/python
 # Gabriel Fernandes <gabrielfernndss@gmail.com>
 # Héricles Emanuel <hericles.me@gmail.com>
 
@@ -30,6 +30,7 @@ ROTEIRO_PATTERN = re.compile('R0.-0.')
 DAY = '\n\r[1] - Segunda \n\r[2] - Terca \n\r[3] - Quarta \n\r[4] - Quinta \n\r[5] - Sexta\n\r'
 CRON = CronTab(user=True)
 
+
 def write_error(mensagem):
     print('\033[31m' + mensagem + '\033[0;0m')
 
@@ -44,11 +45,11 @@ def clear_data():
         if (str(job).split()[-3:] == this):
             CRON.remove(job)
     CRON.write()
-    write_success('Configurações de agendamento resetadas com sucesso')
+
 
 def agendar_submissao():
     print(DAY)
-    
+
     while True:
         try:
             data = int(input('Escolha o dia da Submissão: '))
@@ -58,7 +59,7 @@ def agendar_submissao():
             write_error('Data precisa ser um inteiro')
         except ValueError:
             write_error('Data precisa ser um valor entre 1 e 5')
-            
+
     while True:
         try:
             hora = int(input('Escolha a hora da Submissão (Formato 24h): '))
@@ -77,6 +78,7 @@ def agendar_submissao():
     CRON.write()
     write_success('Submissão agendada com Sucesso')
 
+
 def valida_data(data):
     if not isinstance(data, int):
         raise TypeError()
@@ -84,11 +86,13 @@ def valida_data(data):
     if data not in datas:
         raise ValueError()
 
+
 def valida_hora(hora):
     if not isinstance(hora, int):
         raise TypeError()
     if (hora < 0 or hora > 24):
         raise ValueError()
+
 
 def valida_turma(turma):
     if not isinstance(turma, str):
@@ -169,7 +173,7 @@ def rm_folders(path):
 def reset_config(path):
     clear_data()
     valida_path(path)
-    
+
     try:
         os.unlink(os.path.join(path, 'personalinfo.json'))
         write_success('Configurações resetadas com sucesso')
