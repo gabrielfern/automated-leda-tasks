@@ -50,7 +50,7 @@ def set_up():
         break
 
     while True:
-        data['turma'] = input('Digite sua turma(1, 2 ou 3): ')
+        data['turma'] = input('Digite sua turma: ')
         if data['turma'] not in ('1', '2', '3'):
             autoit.write_error('Sua turma precisa ser 1, 2 ou 3')
             continue
