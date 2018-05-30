@@ -34,7 +34,7 @@ URLS = ('http://150.165.85.29:81/cronograma',
 def make_pattern(turma):
     return re.compile('''(?:P[PRF][1-3]|R(?:0|1(?=[0-7]))\d)-0''' + turma
                     + '''\s*<td\s*class="text-xs-center"\s*data-toggle="tooltip"\s*data-placement="right"\s*title='Atividade'''
-                    + '''\s*inicia\s*em\s*\d\d/\d\d/2017\s*\d\d:\d\d''')
+                    + '''\s*inicia\s*em\s*\d\d/\d\d/20\d\d\s*\d\d:\d\d''')
 
 
 def valida_requisicao(req):
