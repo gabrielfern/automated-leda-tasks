@@ -55,20 +55,17 @@ def agendar_submissao():
             data = int(input('Escolha o dia da Submissão: '))
             valida_data(data)
             break
-        except (TypeError, NameError):
-            write_error('Data precisa ser um inteiro')
         except ValueError:
-            write_error('Data precisa ser um valor entre 1 e 5')
+            write_error('Dia precisa ser um valor entre 1 e 5')
 
     while True:
         try:
             hora = int(input('Escolha a hora da Submissão (Formato 24h): '))
             valida_hora(hora)
             break
-        except (TypeError, NameError):
-            write_error('Hora precisa ser um inteiro')
         except ValueError:
-            write_error('Hora precisa ser um valor entre 0 e 24')
+            write_error('Hora precisa ser um valor entre 0 e 23')
+
     dias = {'1':'MON', '2': 'TUE', '3': 'WED', '4': 'THU', '5': 'FRI'}
     job  = CRON.new(command='python -m automated')
     job.dow.on(dias[str(data)])
@@ -80,17 +77,12 @@ def agendar_submissao():
 
 
 def valida_data(data):
-    if not isinstance(data, int):
-        raise TypeError()
-    datas = (1,2,3,4,5)
-    if data not in datas:
+    if data not in (1,2,3,4,5):
         raise ValueError()
 
 
 def valida_hora(hora):
-    if not isinstance(hora, int):
-        raise TypeError()
-    if (hora < 0 or hora > 24):
+    if (hora < 0 or hora > 23):
         raise ValueError()
 
 
