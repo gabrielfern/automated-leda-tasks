@@ -66,11 +66,19 @@ def agendar_submissao():
         except ValueError:
             write_error('Hora precisa ser um valor entre 0 e 23')
 
+    while True:
+        try:
+            minuto = int(input('Escolha o minuto da Submissão: '))
+            valida_minuto(minuto)
+            break
+        except ValueError:
+            write_error('Minuto precisa ser um valor entre 0 e 59')
+
     dias = {'1':'MON', '2': 'TUE', '3': 'WED', '4': 'THU', '5': 'FRI'}
     job  = CRON.new(command='python -m automated')
     job.dow.on(dias[str(data)])
     job.hour.also.on(hora)
-    job.minute.also.on(1)
+    job.minute.also.on(minuto)
     job.enable()
     CRON.write()
     write_success('Submissão agendada com Sucesso')
@@ -83,6 +91,11 @@ def valida_data(data):
 
 def valida_hora(hora):
     if (hora < 0 or hora > 23):
+        raise ValueError()
+
+
+def valida_minuto(minuto):
+    if (minuto < 0 or minuto > 59):
         raise ValueError()
 
 
