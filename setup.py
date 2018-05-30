@@ -14,7 +14,7 @@ except ImportError:
 
 setup(
    name='automated',
-   version='1.2.2',
+   version='1.3.0',
    description='Automatizador de tarefas - LEDA',
    license='MIT',
    classifiers=[
