@@ -32,9 +32,10 @@ URLS = ('http://150.165.85.29:81/cronograma',
 
 
 def make_pattern(turma):
-    return re.compile('''(?:P[PRF][1-3]|R(?:0|1(?=[0-7]))\d)-0''' + turma
-                    + '''\s*<td\s*class="text-xs-center"\s*data-toggle="tooltip"\s*data-placement="right"\s*title='Atividade'''
-                    + '''\s*inicia\s*em\s*\d\d/\d\d/20\d\d\s*\d\d:\d\d''')
+    return re.compile('(?:P[PRF][1-3]|R(?:0|1(?=[0-7]))\d)-0' + turma
+                    + '\s*<td\s*class="text-xs-center"\s*data-toggle="tooltip"'
+                    + '\s*data-placement="right"\s*title=\'Atividade'
+                    + '\s*inicia\s*em\s*\d\d/\d\d/20\d\d\s*\d\d:\d\d')
 
 
 def valida_requisicao(req):
@@ -50,7 +51,8 @@ def valida_roteiro(roteiro):
         raise TypeError('roteiro precisa ser uma "str"')
     regex = re.compile('(?:P[PRF][1-3]|R(?:0|1(?=[0-7]))\d)-0[1-3]\Z')
     if not regex.match(roteiro):
-        raise ValueError('roteiro precisa ter o seguinte formato: R03-02 ou PP2-3 por exemplo')
+        raise ValueError('roteiro precisa ter o seguinte formato: R03-02'
+        + ' ou PP2-3 por exemplo')
 
 
 def make_datetime(datetime_tuple):
@@ -92,7 +94,8 @@ def req_crono(turma):
         dates.append(all_roteiros[i][-16:-6])
         horas.append(all_roteiros[i][-1:-6:-1][::-1])
 
-    all_roteiros = {str(a):(str(b), str(c)) for a, b, c in ((roteiros[i], dates[i], horas[i]) for i in range(len(roteiros)))}
+    all_roteiros = {str(a):(str(b), str(c)) for a, b, c in ((roteiros[i],
+    dates[i], horas[i]) for i in range(len(roteiros)))}
     return all_roteiros
 
 
@@ -144,8 +147,10 @@ def main():
     if len(sys.argv) > 1:
         pprint.pprint(req_crono(sys.argv[1]))
     else:
-        print('''Você precisa especificar a turma passando como argumento da linha de comando.
-            Por exemplo: "python3 retrievedata.py 3" Sendo o argumento referente a uma das 3 turmas''')
+        print('''Você precisa especificar a turma passando como
+        argumento da linha de comando.
+            Por exemplo: "python3 retrievedata.py 3"
+            Sendo o argumento referente a uma das 3 turmas''')
         sys.exit(1)
 
 
