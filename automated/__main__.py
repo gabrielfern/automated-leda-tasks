@@ -158,8 +158,8 @@ def main():
 
                     autoit.write_success('...Enviando com o maven...\n')
                     autoit.mvn_commit(os.path.join(data['path'], roteiro[0:3]))
-                    autoit.write_success('\n...Trabalho acabado por aqui, Roteiro %s' %roteiro,
-                            '\nencontra-se em %s' %(data['path'] + '/' + roteiro[0:3]))
+                    autoit.write_success('\n...Trabalho acabado por aqui, Roteiro %s' %roteiro
+                    + '\nencontra-se em %s' %(data['path'] + '/' + roteiro[0:3]))
                 else:
                     autoit.write_error('... Sem roteiros disponíveis no momento')
 
