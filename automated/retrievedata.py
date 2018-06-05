@@ -136,7 +136,7 @@ def get_roteiro_zip(path, roteiro, matricula):
             'matricula': matricula}
     req_roteiro = requests.post(URLS[2], data=data)
     valida_requisicao(req_roteiro)
-    if req_roteiro.text.startswith('Matrícula'):
+    if req_roteiro.text.startswith('Matricula'):
         raise ValueError('Matrícula não cadastrada')
     else:
         with open(os.path.join(path, roteiro + '.zip'), 'wb') as zp:
