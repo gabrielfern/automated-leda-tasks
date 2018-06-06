@@ -8,6 +8,7 @@ from crontab import CronTab
 import re
 import os
 import sys
+import util
 import shutil
 import zipfile
 
@@ -53,74 +54,42 @@ def agendar_submissao():
     while True:
         try:
             data = int(input('Escolha o dia da Submissão: '))
-            valida_data(data)
+            util.valida_data(data)
             break
-        except (TypeError, NameError):
-            write_error('Data precisa ser um inteiro')
         except ValueError:
-            write_error('Data precisa ser um valor entre 1 e 5')
+            write_error('Dia precisa ser um valor entre 1 e 5')
 
     while True:
         try:
             hora = int(input('Escolha a hora da Submissão (Formato 24h): '))
-            valida_hora(hora)
+            util.valida_hora(hora)
             break
-        except (TypeError, NameError):
-            write_error('Hora precisa ser um inteiro')
         except ValueError:
-            write_error('Hora precisa ser um valor entre 0 e 24')
+            write_error('Hora precisa ser um valor entre 0 e 23')
+
+    while True:
+        try:
+            minuto = int(input('Escolha o minuto da Submissão: '))
+            util.valida_minuto(minuto)
+            break
+        except ValueError:
+            write_error('Minuto precisa ser um valor entre 0 e 59')
+
     dias = {'1':'MON', '2': 'TUE', '3': 'WED', '4': 'THU', '5': 'FRI'}
     job  = CRON.new(command='python -m automated')
     job.dow.on(dias[str(data)])
     job.hour.also.on(hora)
-    job.minute.also.on(1)
+    job.minute.also.on(minuto)
     job.enable()
     CRON.write()
     write_success('Submissão agendada com Sucesso')
 
 
-def valida_data(data):
-    if not isinstance(data, int):
-        raise TypeError()
-    datas = (1,2,3,4,5)
-    if data not in datas:
-        raise ValueError()
-
-
-def valida_hora(hora):
-    if not isinstance(hora, int):
-        raise TypeError()
-    if (hora < 0 or hora > 24):
-        raise ValueError()
-
-
-def valida_turma(turma):
-    if not isinstance(turma, str):
-        raise TypeError('Turma precisa ser um caractere("str")')
-    turmas = ('1', '2', '3')
-    if turma not in turmas:
-        raise ValueError('Turma precisa ser uma das: (1,2,3)')
-
-
-def valida_matricula(matricula):
-    if not isinstance(matricula, str):
-        raise TypeError('matricula precisa ser uma "str"')
-    regex = re.compile('\d{1,9}\Z')
-    if not regex.match(matricula):
-        raise ValueError('matricula precisa ser do tipo xxxxxxxxx, onde x eh um digito(1-9)')
-
-
-def valida_path(path):
-    if not isinstance(path, str):
-        raise TypeError('Path precisa ser passado como uma "str"')
-    if not os.path.isdir(path):
-        raise TypeError('Insira um caminho("path") de diretório Válido')
-
 
 def write_pom(path, matricula, roteiro):
-    valida_path(path)
-    valida_matricula(matricula)
-    retrievedata.valida_roteiro(roteiro)
+    util.valida_path(path)
+    util.valida_matricula(matricula)
+    retrievedata.util.valida_roteiro(roteiro)
 
     data = None
     with open(path + '/pom.xml', 'r') as pom:
@@ -134,28 +103,28 @@ def write_pom(path, matricula, roteiro):
 
 
 def extract_zip(zip, folder):
-    valida_path(os.path.dirname(os.path.abspath(zip)))
-    valida_path(os.path.dirname(os.path.abspath(folder)))
+    util.valida_path(os.path.dirname(os.path.abspath(zip)))
+    util.valida_path(os.path.dirname(os.path.abspath(folder)))
 
     with zipfile.ZipFile(zip) as zp:
         zp.extractall(folder)
 
 
 def move_folder(folder, path):
-    valida_path(folder)
-    valida_path(path)
+    util.valida_path(folder)
+    util.valida_path(path)
 
     shutil.move(folder, path)
 
 
 def mvn_commit(path):
-    valida_path(path)
+    util.valida_path(path)
 
     os.system('cd %s && mvn install -DskipTests' %path)
 
 
 def rm_zips(path):
-    valida_path(path)
+    util.valida_path(path)
 
     zips = filter(lambda f: f.endswith('.zip'), os.listdir(path))
     zips = list(map(lambda f: os.path.join(path, f), zips))
@@ -163,7 +132,7 @@ def rm_zips(path):
 
 
 def rm_folders(path):
-    valida_path(path)
+    util.valida_path(path)
 
     folders = list(map(lambda f: os.path.join(path, f), os.listdir(path)))
     folders = filter(lambda f: os.path.isdir(f) and not f.endswith('__pycache__'), folders)
@@ -172,7 +141,7 @@ def rm_folders(path):
 
 def reset_config(path):
     clear_data()
-    valida_path(path)
+    util.valida_path(path)
 
     try:
         os.unlink(os.path.join(path, 'personalinfo.json'))

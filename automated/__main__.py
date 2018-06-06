@@ -8,8 +8,8 @@ from __future__ import print_function
 from crontab import CronTab
 
 import os
-import re
 import sys
+import util
 import json
 import shutil
 from pprint import pprint
@@ -44,30 +44,31 @@ def set_up():
 
     while True:
         data['nome'] = input('Digite seu nome: ')
-        if data['nome'].strip == '':
-            autoit.write_error('Você precisa ter um nome')
+        if not util.valida_nome(data['nome']):
+            print(util.write_error('Você precisa ter um nome'))
             continue
         break
 
     while True:
-        data['turma'] = input('Digite sua turma(1, 2 ou 3): ')
-        if data['turma'] not in ('1', '2', '3'):
+        data['turma'] = input('Digite sua turma: ')
+        if not util.valida_turma(data['turma']):
             autoit.write_error('Sua turma precisa ser 1, 2 ou 3')
             continue
         break
 
     while True:
-        matricula_regex = re.compile(r'\d{9}')
-        data['matricula'] = input('Número de matrícula: ')
-        if matricula_regex.match(data['matricula']) == None:
-            autoit.write_error('Sua matrícula precisa ter 9 dígitos')
+        try:
+            data['matricula'] = input('Número de matrícula: ')
+            util.valida_matricula(data['matricula'])
+        except (TypeError, ValueError) as err:
+            print(util.write_error(str(err)))
             continue
         break
 
     while True:
         data['path'] = input('Caminho completo até sua pasta com roteiros: ')
-        if data['path'].strip() == '' or not os.path.isdir(data['path']):
-            autoit.write_error('Você precisa especificar um caminho para sua pasta')
+        if not util.valida_path(data['path']):
+            print(util.write_error('Você precisa especificar um caminho para sua pasta'))
             continue
         validado = True
         break
@@ -158,8 +159,8 @@ def main():
 
                     autoit.write_success('...Enviando com o maven...\n')
                     autoit.mvn_commit(os.path.join(data['path'], roteiro[0:3]))
-                    autoit.write_success('\n...Trabalho acabado por aqui, Roteiro %s' %roteiro,
-                            '\nencontra-se em %s' %(data['path'] + '/' + roteiro[0:3]))
+                    autoit.write_success('\n...Trabalho acabado por aqui, Roteiro %s' %roteiro
+                    + '\nencontra-se em %s' %(data['path'] + '/' + roteiro[0:3]))
                 else:
                     autoit.write_error('... Sem roteiros disponíveis no momento')
 
