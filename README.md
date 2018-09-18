@@ -1,4 +1,3 @@
-[![PyPI](https://img.shields.io/badge/pypi-1.1.5-blue.svg)](https://pypi.python.org/pypi/automated)
 [![PyPI](https://img.shields.io/pypi/pyversions/Django.svg)](https://pypi.python.org/pypi/automated)
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/gabrielfern/automated-leda-tasks/master/LICENSE)
 
@@ -27,6 +26,10 @@
     - pip (gerenciador de pacotes python, instala dependências internas automaticamente)
 
   # Instalar
+
+    pip install --user automated
+
+    ou (a partir desse repositório clonado)
 
     python setup.py install --user
 

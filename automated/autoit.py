@@ -84,8 +84,6 @@ def agendar_submissao():
     CRON.write()
     write_success('Submissão agendada com Sucesso')
 
-
-
 def write_pom(path, matricula, roteiro):
     util.valida_path(path)
     util.valida_matricula(matricula)
