@@ -14,10 +14,7 @@ import zipfile
 
 py_version = sys.version_info.major
 
-if py_version == 2:
-    import retrievedata
-else:
-    from . import retrievedata
+import retrievedata
 
 
 """

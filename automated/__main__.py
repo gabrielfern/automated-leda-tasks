@@ -14,18 +14,14 @@ import json
 import shutil
 from pprint import pprint
 
+import autoit
+import retrievedata
+
 py_version = sys.version_info.major
 
 if py_version == 2:
-    import autoit
-    import retrievedata
-
     input = raw_input
-
-else:
-    from . import autoit
-    from . import retrievedata
-
+    
 
 """
 Controla as funcionalidades
