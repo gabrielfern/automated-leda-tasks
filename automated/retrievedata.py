@@ -15,10 +15,10 @@ import requests
 py_version = sys.version_info.major
 
 if py_version == 2:
-    import autoit
+    import util
 
 else:
-    from . import autoit
+    from . import util
 
 
 """
@@ -83,7 +83,7 @@ def match_roteiro(turma):
 def req_crono(turma):
     req = requests.get(URLS[0])
     valida_requisicao(req)
-    autoit.valida_turma(turma)
+    util.valida_turma(turma)
 
     all_roteiros = make_pattern(turma).findall(req.text)
     roteiros = []
@@ -129,8 +129,8 @@ def get_hora_atual():
 
 def get_roteiro_zip(path, roteiro, matricula):
     valida_roteiro(roteiro)
-    autoit.valida_path(path)
-    autoit.valida_matricula(matricula)
+    util.valida_path(path)
+    util.valida_matricula(matricula)
 
     data = {'id': roteiro,
             'matricula': matricula}
