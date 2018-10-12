@@ -9,13 +9,13 @@ from crontab import CronTab
 
 import os
 import sys
-import util
 import json
 import shutil
 from pprint import pprint
 
-import autoit
-import retrievedata
+from . import util
+from . import autoit
+from . import retrievedata
 
 py_version = sys.version_info.major
 

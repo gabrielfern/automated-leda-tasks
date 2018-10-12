@@ -14,7 +14,7 @@ import requests
 
 py_version = sys.version_info.major
 
-import util
+from . import util
 
 
 """

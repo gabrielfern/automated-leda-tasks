@@ -8,13 +8,13 @@ from crontab import CronTab
 import re
 import os
 import sys
-import util
 import shutil
 import zipfile
 
 py_version = sys.version_info.major
 
-import retrievedata
+from . import util
+from . import retrievedata
 
 
 """
