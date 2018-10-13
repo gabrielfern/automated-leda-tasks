@@ -11,8 +11,6 @@ import sys
 import shutil
 import zipfile
 
-py_version = sys.version_info.major
-
 from . import util
 from . import retrievedata
 
