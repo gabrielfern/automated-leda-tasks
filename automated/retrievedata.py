@@ -14,11 +14,7 @@ import requests
 
 py_version = sys.version_info.major
 
-if py_version == 2:
-    import autoit
-
-else:
-    from . import autoit
+from . import util
 
 
 """
@@ -32,27 +28,10 @@ URLS = ('http://150.165.85.29:81/cronograma',
 
 
 def make_pattern(turma):
-    return re.compile('(?:P[PRF][1-3]|R(?:0|1(?=[0-7]))\d)-0' + turma
+    return re.compile('(?:P[PRF][1-3]|RR[1-3]|R(?:0|1(?=[0-7]))\d)-0' + turma
                     + '\s*<td\s*class="text-xs-center"\s*data-toggle="tooltip"'
                     + '\s*data-placement="right"\s*title=\'Atividade'
                     + '\s*inicia\s*em\s*\d\d/\d\d/20\d\d\s*\d\d:\d\d')
-
-
-def valida_requisicao(req):
-    try:
-        req.raise_for_status()
-    except requests.exceptions.HTTPError as http_error:
-        print(http_error)
-        sys.exit(1)
-
-
-def valida_roteiro(roteiro):
-    if not isinstance(roteiro, str):
-        raise TypeError('roteiro precisa ser uma "str"')
-    regex = re.compile('(?:P[PRF][1-3]|R(?:0|1(?=[0-7]))\d)-0[1-3]\Z')
-    if not regex.match(roteiro):
-        raise ValueError('roteiro precisa ter o seguinte formato: R03-02'
-        + ' ou PP2-3 por exemplo')
 
 
 def make_datetime(datetime_tuple):
@@ -82,8 +61,8 @@ def match_roteiro(turma):
 
 def req_crono(turma):
     req = requests.get(URLS[0])
-    valida_requisicao(req)
-    autoit.valida_turma(turma)
+    util.valida_requisicao(req)
+    util.valida_turma(turma)
 
     all_roteiros = make_pattern(turma).findall(req.text)
     roteiros = []
@@ -108,7 +87,7 @@ def get_roteiros(turma):
 
 def req_date_hora():
     req = requests.get(URLS[1])
-    valida_requisicao(req)
+    util.valida_requisicao(req)
     if py_version == 2:
         return req.text.encode('utf-8')
     else:
@@ -128,14 +107,14 @@ def get_hora_atual():
 
 
 def get_roteiro_zip(path, roteiro, matricula):
-    valida_roteiro(roteiro)
-    autoit.valida_path(path)
-    autoit.valida_matricula(matricula)
+    util.valida_roteiro(roteiro)
+    util.valida_path(path)
+    util.valida_matricula(matricula)
 
     data = {'id': roteiro,
             'matricula': matricula}
     req_roteiro = requests.post(URLS[2], data=data)
-    valida_requisicao(req_roteiro)
+    util.valida_requisicao(req_roteiro)
     if req_roteiro.text.startswith('Matricula'):
         raise ValueError('Matrícula não cadastrada')
     else:
